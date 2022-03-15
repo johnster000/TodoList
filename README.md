@@ -21,7 +21,7 @@ The single page site is setup with 3 main parts:
   
 Add New Item
   - Simply enter a description for the task into the provided text box and click the green "Add" button
-  - When editing a existing item, the description will populate the text box and you can make any changes nessesary, and then update the item by clicking "update", or cancel the update by clicking "Cancel"
+  - When editing an existing item, the description will populate the text box and you can make any changes nessesary, and then update the item by clicking "update", or cancel the update by clicking "Cancel"
 
 Incomplete Items
   - 3 options are available in this table: 
