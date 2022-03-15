@@ -1,0 +1,123 @@
+﻿@model TodoList.ViewModels.TaskItemViewModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>TODO List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0">
+</head>
+<body style="margin: 20px;">
+
+    <h1>ToDoList</h1>
+
+    <div class="card">
+        <h5 class="card-header">
+            Add New Item
+        </h5>
+        <div class="card-body pb-1">
+            @using (var form = Html.BeginForm("CreateUpdate", "Home", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.EditableItem.Id)
+                <div class="input-group">
+                    @Html.TextBoxFor(model => model.EditableItem.Description, new { @class = "form-control", @placeholder="Enter a description..." })
+                    <div class="input-group-append">
+                        @if (Model.EditableItem.Id > 0)
+                        {
+                            <button type="submit" class="btn btn-success">Update</button>
+                            <a href='/Home/Index' class='btn btn-danger'>Cancel</a>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-success">Add</button>
+                        }
+                        </div>
+                </div>
+                @Html.ValidationSummary()
+            }
+        </div>
+    </div>
+
+    <br />
+    <div class="card">
+        <h5 class="card-header">
+            Incompleted Items (@(Model.TaskItems.Where(n => n.Status_ID == 1).Count()))
+        </h5>
+        <div class="card-body pb-1">
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <tr>
+                    <th>Description</th>
+                    <th class="text-center">Date Added</th>
+                    <th class="text-center">Complete Item</th>
+                    <th class="text-center">Delete Item</th>
+                </tr>
+                @foreach (var item in Model.TaskItems.Where(n => n.Status_ID == 1))
+                {
+                    <tr>
+                        <td>
+                            <a href="/Home/Edit/@item.Id">
+                                @item.Description
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            @item.DateAdded.ToString()
+                        </td>
+                        <td class="text-center">
+                            <a href="/Home/Complete/@item.Id" class="btn btn-sm btn-success">Complete</a>
+                        </td>
+                        <td class="text-center">
+                            <a href="/Home/Delete/@item.Id" onclick="return confirm('Are you sure?');" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <h5 class="card-header">
+            Completed Items (@(Model.TaskItems.Where(n => n.Status_ID == 2).Count()))
+        </h5>
+        <div class="card-body pb-1">
+             <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <tr>
+                    <th>Description</th>
+                    <th class="text-center">Date Added</th>
+                    <th class="text-center">Date Completed</th>
+                    <th class="text-center">Time To Close</th>
+                    <th class="text-center">Uncomplete Item</th>
+                    <th class="text-center">Delete Item</th>
+                </tr>
+                @foreach (var item in Model.TaskItems.Where(n => n.Status_ID == 2))
+                {
+                    <tr>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td class="text-center">
+                            @item.DateAdded.ToString()
+                        </td>
+                        <td class="text-center">
+                            @item.DateCompleted.ToString()
+                        </td>
+                        <td class="text-center">
+                            @(Math.Round((@item.DateCompleted - @item.DateAdded).Value.TotalMinutes, 0)) Minutes
+                        </td>
+                        <td class="text-center">
+                            <a href="/Home/UnComplete/@item.Id" class="btn btn-sm btn-primary">Uncomplete</a>
+                        </td>
+                        <td class="text-center">
+                            <a href="/Home/Delete/@item.Id" onclick="return confirm('Are you sure?');" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
